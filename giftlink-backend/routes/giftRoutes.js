@@ -1,6 +1,10 @@
-const connectToDatabase = require("../models/db");
+const express = require('express');
+const router = express.Router();
+const connectToDatabase = require('../models/db');
+const logger = require('../logger');
 
 router.get('/', async (req, res) => {
+    logger.info('/ called');
     try {
         // Task 1: Connect to MongoDB and store connection to db constant
         const db = await connectToDatabase();
@@ -19,7 +23,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     try {
         // Task 1: Connect to MongoDB and store connection to db constant
         const db = await connectToDatabase();
@@ -30,7 +34,7 @@ router.get('/:id', async (req, res) => {
         const id = req.params.id;
 
         // Task 3: Find a specific gift by ID using the collection.fineOne method and store in constant called gift
-        const gift = collection.findOne({id: id});
+        const gift = await collection.findOne({id: id});
 
         if (!gift) {
             return res.status(404).send('Gift not found');
@@ -38,8 +42,9 @@ router.get('/:id', async (req, res) => {
 
         res.json(gift);
     } catch (e) {
-        console.error('Error fetching gift:', e);
-        res.status(500).send('Error fetching gift');
+        // console.error('Error fetching gift:', e);
+        // res.status(500).send('Error fetching gift');
+        next(e);
     }
 });
 
