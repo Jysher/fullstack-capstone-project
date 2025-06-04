@@ -4,7 +4,7 @@ const connectToDatabase = require('../models/db');
 const logger = require('../logger');
 
 router.get('/', async (req, res) => {
-    logger.info('/ called');
+    logger.info('gift-get / called');
     try {
         // Task 1: Connect to MongoDB and store connection to db constant
         const db = await connectToDatabase();
@@ -24,12 +24,13 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res, next) => {
+    logger.info('gift-get /:id called');
     try {
         // Task 1: Connect to MongoDB and store connection to db constant
         const db = await connectToDatabase();
 
         // Task 2: use the collection() method to retrieve the gift collection
-        const collection = db.collection('gifts')
+        const collection = db.collection('gifts');
 
         const id = req.params.id;
 
@@ -52,6 +53,7 @@ router.get('/:id', async (req, res, next) => {
 
 // Add a new gift
 router.post('/', async (req, res, next) => {
+    logger.info('gift-post / called')
     try {
         const db = await connectToDatabase();
         const collection = db.collection("gifts");
