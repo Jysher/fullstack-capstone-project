@@ -55,8 +55,8 @@ router.get('/:id', async (req, res, next) => {
 
 
 // Add a new gift
-router.post('/', async (req, res, nex;t) => {
-    logger.info('gift-post / called')
+router.post('/', async (req, res, next) => {
+    logger.info('gift-post / called');
     try {
         const db = await connectToDatabase();
         const collection = db.collection("gifts");
