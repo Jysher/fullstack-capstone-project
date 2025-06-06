@@ -40,7 +40,7 @@ function RegisterPage() {
                     password: password,
                 })
             });
-
+            console.log(response);
             const json = await response.json();
             if (json.authtoken) {
                 sessionStorage.setItem('auth-token', json.authtoken);

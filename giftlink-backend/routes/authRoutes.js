@@ -26,8 +26,11 @@ router.post('/register', async (req, res) => {
         const collection = db.collection('users');
 
         //Task 3: Check for existing email
-        const existingEmail = collection.findOne({email: req.body.email});
-
+        const existingEmail = await collection.findOne({email: req.body.email});
+        console.log(existingEmail);
+        if (existingEmail) {
+           return res.status(400).json({error: 'User already exists'});
+        }
         const salt = await bcryptjs.genSalt(10);
         const hash = await bcryptjs.hash(req.body.password, salt);
         const email = req.body.email;
@@ -109,7 +112,7 @@ router.put('/update', async (req, res) => {
     // Task 3: Check if `email` is present in the header and throw an appropriate error message if not present.
     const email = req.headers.email;
     if (!email) {
-        logger.error('Email not fouond in the request headers');
+        logger.error('Email not found in the request headers');
         return res.status(400).json({ error: "Email not found in the request headers" });
     }
     // Task 4: Connect to MongoDB
